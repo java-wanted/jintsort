@@ -1,6 +1,7 @@
 package src.javawanted.jintsort;
 
 import static java.lang.System.out;
+import java.util.Arrays;
 
 class Reader {
 	final int NUM_MIN = -128;
@@ -11,6 +12,7 @@ class Reader {
 	final String OP_DESC = "-d";
 
 	private boolean ascending = true;
+	private Integer []numbers = new Integer [0];
 
 	void usage()
 	{
@@ -35,6 +37,41 @@ class Reader {
 		return ascending;
 	}
 
+	Integer []numbers()
+	{
+		return Arrays.copyOf(numbers, numbers.length);
+	}
+
+	private void parse_numbers(String []argv, int first)
+	{
+		int last = argv.length;
+		int i = first;
+		int num = 0;
+
+		numbers = new Integer[last - first];
+
+		for (; i < last; i++) {
+			try {
+				num = Integer.parseInt(argv[i]);
+			} catch (NumberFormatException exc) {
+				break;
+			}
+
+			if (num < NUM_MIN || num > NUM_MAX) {
+				break;
+			}
+
+			numbers[i - first] = num;
+		}
+
+		if (i < last) {
+			out.printf("Invalid parameter %d: is %s, but MUST BE " +
+					"an integer in the range [%d, %d].\n",
+					i + 1, argv[i], NUM_MIN, NUM_MAX);
+			System.exit(1);
+		}
+	}
+
 	void parse(String []argv)
 	{
 		int last = argv.length;
@@ -50,6 +87,8 @@ class Reader {
 			ascending = false;
 			first++;
 		}
+
+		parse_numbers(argv, first);
 	}
 }
 

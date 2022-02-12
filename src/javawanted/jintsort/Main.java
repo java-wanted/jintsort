@@ -2,6 +2,7 @@ package src.javawanted.jintsort;
 
 import static java.lang.System.out;
 import java.util.Arrays;
+import java.util.Comparator;
 
 class Reader {
 	final int NUM_MIN = -128;
@@ -112,16 +113,39 @@ class Writer {
 	}
 }
 
+class Sorter {
+	private Comparator<Integer> compar;
+
+	Sorter(boolean ascending)
+	{
+		if (ascending)
+			compar = Comparator.naturalOrder();
+		else
+			compar = Comparator.reverseOrder();
+	}
+
+	Integer [] sort(Integer []numbers)
+	{
+		Integer [] nums = Arrays.copyOf(numbers, numbers.length);
+
+		Arrays.sort(nums, compar);
+
+		return nums;
+	};
+}
+
 public class Main {
 	public static void main(String []argv)
 	{
 		Reader reader = new Reader();
 		Writer writer;
+		Sorter sorter;
 		Integer []numbers;
 
 		reader.parse(argv);
 
-		numbers = reader.numbers();
+		sorter = new Sorter(reader.ascending());
+		numbers = sorter.sort(reader.numbers());
 
 		writer = new Writer();
 		writer.write(numbers);

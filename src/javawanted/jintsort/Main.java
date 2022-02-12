@@ -92,12 +92,39 @@ class Reader {
 	}
 }
 
+class Writer {
+	void write(Integer []numbers)
+	{
+		int last = numbers.length;
+		int i = 0;
+
+		if (i == last)
+			return;
+
+		out.printf("%d", numbers[i].intValue());
+		i++;
+
+		for (; i < last; i++) {
+			out.printf(" %d", numbers[i].intValue());
+		}
+
+		out.printf("\n");
+	}
+}
+
 public class Main {
 	public static void main(String []argv)
 	{
 		Reader reader = new Reader();
+		Writer writer;
+		Integer []numbers;
 
 		reader.parse(argv);
+
+		numbers = reader.numbers();
+
+		writer = new Writer();
+		writer.write(numbers);
 
 		System.exit(0);
 	}

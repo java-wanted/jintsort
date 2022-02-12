@@ -7,6 +7,10 @@ class Reader {
 	final int NUM_MAX = 127;
 
 	final String OP_HELP = "-h";
+	final String OP_ASC = "-a";
+	final String OP_DESC = "-d";
+
+	private boolean ascending = true;
 
 	void usage()
 	{
@@ -26,6 +30,11 @@ class Reader {
 		System.exit(1);
 	}
 
+	boolean ascending()
+	{
+		return ascending;
+	}
+
 	void parse(String []argv)
 	{
 		int last = argv.length;
@@ -33,6 +42,13 @@ class Reader {
 
 		if (first < last && argv[first].equals(OP_HELP)) {
 			usage();
+		}
+
+		if (first < last && argv[first].equals(OP_ASC)) {
+			first++;
+		} else if (first < last && argv[first].equals(OP_DESC)) {
+			ascending = false;
+			first++;
 		}
 	}
 }

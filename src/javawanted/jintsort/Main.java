@@ -3,6 +3,9 @@ package src.javawanted.jintsort;
 import static java.lang.System.out;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Scanner;
+import java.util.List;
+import java.util.LinkedList;
 
 class Num {
 	static final int NUM_MIN = -128;
@@ -73,13 +76,27 @@ class Reader {
 		return Arrays.copyOf(numbers, numbers.length);
 	}
 
-	private void read_numbers()
+	private void read_numbers(Scanner sc)
 	{
-		/* TODO: read NUMBERS from the STDIN stream
-		 *
-		 * This method will be provided in the following commpits.
-		 */
-		System.exit(1);
+		List<Integer> nums = new LinkedList<>();
+		Num num = new Num();
+		String s;
+		int i = 0;
+
+		for (; sc.hasNext(); i++) {
+			s = sc.next();
+
+			if (!num.parse(s)) {
+				out.printf("Invalid number %d: is %s, but MUST BE " +
+					"an integer in the range [%d, %d].\n",
+					i + 1, s, NUM_MIN, NUM_MAX);
+				System.exit(1);
+			}
+
+			nums.add(num.num());
+		}
+
+		numbers = nums.toArray(numbers);
 	}
 
 	private void parse_numbers(String []argv, int first)
@@ -133,7 +150,13 @@ class Reader {
 		}
 
 		if (first == last) {
-			read_numbers();
+			/* There is no a `dup` operation in Java. But all data
+			 * are going to be fetched now. And it is possible
+			 * to close the STDIN stream here.
+			 */
+			try (Scanner sc = new Scanner(System.in)) {
+				read_numbers(sc);
+			}
 		} else {
 			parse_numbers(argv, first);
 		}

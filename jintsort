@@ -1,0 +1,5 @@
+#!/bin/bash
+
+jarfile="dist/jintsort.jar"
+
+java -jar "$jarfile" "$@"

@@ -1,0 +1,21 @@
+<project name="jintsort" default="dist" basedir=".">
+	<target name="clean">
+		<delete dir="build"/>
+		<delete dir="dist"/>
+	</target>
+
+	<target name="compile">
+		<mkdir dir="build"/>
+		<javac srcdir="src" destdir="build"/>
+	</target>
+
+	<target name="dist" depends="compile">
+		<mkdir dir="dist"/>
+		<jar jarfile="dist/jintsort.jar" basedir="build">
+			<manifest>
+				<attribute name="Main-Class"
+					value="javawanted.jintsort.Main"/>
+			</manifest>
+		</jar>
+	</target>
+</project>

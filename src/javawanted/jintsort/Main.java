@@ -4,9 +4,36 @@ import static java.lang.System.out;
 import java.util.Arrays;
 import java.util.Comparator;
 
+class Num {
+	static final int NUM_MIN = -128;
+	static final int NUM_MAX = 127;
+
+	private int num = 0;
+
+	int num()
+	{
+		return num;
+	}
+
+	boolean parse(String s)
+	{
+		try {
+			num = Integer.parseInt(s);
+		} catch (NumberFormatException exc) {
+			return false;
+		}
+
+		if (num < NUM_MIN || num > NUM_MAX) {
+			return false;
+		}
+
+		return true;
+	}
+};
+
 class Reader {
-	final int NUM_MIN = -128;
-	final int NUM_MAX = 127;
+	final int NUM_MIN = Num.NUM_MIN;
+	final int NUM_MAX = Num.NUM_MAX;
 
 	final String OP_HELP = "-h";
 	final String OP_ASC = "-a";
@@ -59,22 +86,15 @@ class Reader {
 	{
 		int last = argv.length;
 		int i = first;
-		int num = 0;
+		Num num = new Num();
 
 		numbers = new Integer[last - first];
 
 		for (; i < last; i++) {
-			try {
-				num = Integer.parseInt(argv[i]);
-			} catch (NumberFormatException exc) {
+			if (!num.parse(argv[i]))
 				break;
-			}
 
-			if (num < NUM_MIN || num > NUM_MAX) {
-				break;
-			}
-
-			numbers[i - first] = num;
+			numbers[i - first] = num.num();
 		}
 
 		if (i < last) {
@@ -112,10 +132,11 @@ class Reader {
 			}
 		}
 
-		if (first == last)
+		if (first == last) {
 			read_numbers();
-		else
+		} else {
 			parse_numbers(argv, first);
+		}
 	}
 }
 

@@ -29,7 +29,7 @@ jintsort [-h] [-a|-d] [NUMBERS]
 
 ## AUTHOR
 
-  java-wanted <microsoft-wanted@yandex.ru>.
+  Boris Stankevich (java-wanted) <microsoft-wanted@yandex.ru>.
 
 ## LICENSE
 

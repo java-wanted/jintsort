@@ -1,4 +1,4 @@
-package src.javawanted.jintsort;
+package javawanted.jintsort;
 
 import static java.lang.System.out;
 import java.util.Arrays;

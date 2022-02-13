@@ -11,6 +11,7 @@ class Reader {
 	final String OP_HELP = "-h";
 	final String OP_ASC = "-a";
 	final String OP_DESC = "-d";
+	final String OP_STDIN = "-";
 
 	private boolean ascending = true;
 	private Integer []numbers = new Integer [0];
@@ -29,6 +30,8 @@ class Reader {
 		out.printf("\n");
 		out.printf("\tNUMBERS A space separated list of integers " +
 				"in the range [%d, %d].\n", NUM_MIN, NUM_MAX);
+		out.printf("\tWith no NUMBERS, or when NUMBERS is -, read " +
+				"read the standard input.\n");
 
 		System.exit(1);
 	}
@@ -41,6 +44,15 @@ class Reader {
 	Integer []numbers()
 	{
 		return Arrays.copyOf(numbers, numbers.length);
+	}
+
+	private void read_numbers()
+	{
+		/* TODO: read NUMBERS from the STDIN stream
+		 *
+		 * This method will be provided in the following commpits.
+		 */
+		System.exit(1);
 	}
 
 	private void parse_numbers(String []argv, int first)
@@ -89,7 +101,21 @@ class Reader {
 			first++;
 		}
 
-		parse_numbers(argv, first);
+		if (first < last && argv[first].equals(OP_STDIN)) {
+			first++;
+
+			if (first != last) {
+				out.printf("Invalid parameter %d: is %s, but " +
+						"no parameters are expected.\n",
+						first + 1, argv[first]);
+				System.exit(1);
+			}
+		}
+
+		if (first == last)
+			read_numbers();
+		else
+			parse_numbers(argv, first);
 	}
 }
 
